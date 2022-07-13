@@ -1,13 +1,12 @@
-import 'package:bloc_course/screens/Login/blocs/sign_in_bloc.dart';
-import 'package:bloc_course/screens/Login/blocs/sign_in_event.dart';
-import 'package:bloc_course/screens/Login/blocs/sign_in_state.dart';
+import 'package:bloc_course/screens/Login/cubits/auth_cubit/auth_cubit.dart';
+import 'package:bloc_course/screens/Login/cubits/auth_cubit/auth_state.dart';
+import 'package:bloc_course/screens/Login/verify_phone_no_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignInScreen extends StatelessWidget {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
 
   SignInScreen({Key? key}) : super(key: key);
 
@@ -21,69 +20,39 @@ class SignInScreen extends StatelessWidget {
             parent: AlwaysScrollableScrollPhysics(),
           ),
           children: [
-            BlocBuilder<SignInBloc, SignInState>(
-              builder: (context, state) {
-                if (state is SignInErrorState) {
-                  return Text(
-                    state.errorMessage,
-                    style: const TextStyle(color: Colors.red),
-                  );
-                } else {
-                  return Container();
+            TextField(
+              controller: _phoneController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "Phone Number",
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            BlocConsumer<AuthCubit, AuthState>(
+              listener: (context, state) {
+                if (state is AuthCodeSentState) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => VerifyPhoneNoScreen()));
                 }
               },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextField(
-              controller: _emailController,
-              onChanged: (value) {
-                BlocProvider.of<SignInBloc>(context).add(TextFieldChangedEvent(
-                    emailValue: _emailController.text,
-                    passowrdValue: _passwordController.text));
-              },
-              decoration: const InputDecoration(
-                label: Text("Email Address"),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextField(
-              controller: _passwordController,
-              onChanged: (value) {
-                BlocProvider.of<SignInBloc>(context).add(
-                  TextFieldChangedEvent(
-                      emailValue: _emailController.text,
-                      passowrdValue: _passwordController.text),
-                );
-              },
-              decoration: const InputDecoration(
-                label: Text("Password"),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            BlocBuilder<SignInBloc, SignInState>(
               builder: (context, state) {
-                if(state is SignInLoadingState){
-                  return const  Center(child: CircularProgressIndicator());
+                if (state is AuthLoadingState) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
                 }
                 return CupertinoButton(
                   onPressed: () {
-                    if (state is SignInValidState) {
-                      BlocProvider.of<SignInBloc>(context).add(
-                        SignInButtonEvent(
-                            email: _emailController.text,
-                            password: _passwordController.text),
-                      );
-                    }
+                    String phoneNumber = "+92" + _phoneController.text;
+                    BlocProvider.of<AuthCubit>(context).sendOTP(phoneNumber);
                   },
                   child: const Text("Sign In"),
-                  color:
-                      (state is SignInValidState) ? Colors.blue : Colors.grey,
+                  color: Colors.blue,
                 );
               },
             ),

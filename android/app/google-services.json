@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "65658599270",
+    "project_id": "bloc-firebase-practice",
+    "storage_bucket": "bloc-firebase-practice.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:65658599270:android:a378bdec92b43fd17c3aa7",
+        "android_client_info": {
+          "package_name": "com.bloc_course"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "65658599270-eeq5csc7tjakdp8oouk41097tros359a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBREXr7yeX4krlSM7lQ5I-rTml4vLUHQzc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "65658599270-eeq5csc7tjakdp8oouk41097tros359a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
